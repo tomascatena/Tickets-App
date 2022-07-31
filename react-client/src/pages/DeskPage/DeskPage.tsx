@@ -1,5 +1,7 @@
 import { Button, Grid, Palette, PaletteColor, Typography } from '@mui/material';
 import { Container } from '@mui/system';
+import { SocketContext } from '../../context/SocketContext';
+import { Ticket } from '../../typings/typings';
 import { getAgentFromStorage } from '../../helpers/getAgentFromStorage';
 import { styled } from '@mui/material/styles';
 import { useHideMenu } from '../../hooks/useHideMenu';
@@ -25,6 +27,8 @@ const ColorText = styled('span', {
 const DeskPage: React.FC<Props> = () => {
   useHideMenu({ shouldHideMenu: false });
 
+  const [ticket, setTicket] = React.useState<Ticket | null>(null);
+
   const navigate = useNavigate();
 
   const { agent, hasPersistedAgent } = getAgentFromStorage();
@@ -39,6 +43,14 @@ const DeskPage: React.FC<Props> = () => {
     navigate('/');
 
     localStorage.removeItem('agent');
+  };
+
+  const { socket } = React.useContext(SocketContext)!;
+
+  const handleGetNextTicket = () => {
+    socket.emit('agent-next-ticket', agent, (ticket: Ticket) => {
+      setTicket(ticket);
+    });
   };
 
   return (
@@ -101,10 +113,10 @@ const DeskPage: React.FC<Props> = () => {
             You are assigned to the ticket:{' '}
 
             <ColorText
-              color='error'
+              color={ticket ? 'error' : 'warning'}
               fontSize='2rem'
             >
-              5
+              {ticket?.ticketNumber ? ticket?.ticketNumber : 'No pending tickets'}
             </ColorText>
           </Typography>
         </Grid>
@@ -119,6 +131,7 @@ const DeskPage: React.FC<Props> = () => {
           <Button
             color='primary'
             variant='contained'
+            onClick={handleGetNextTicket}
           >
             Next Ticket
             <ArrowRightIcon />

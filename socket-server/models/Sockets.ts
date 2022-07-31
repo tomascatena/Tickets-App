@@ -6,6 +6,11 @@ export type SocketsConfig = {
   io: SocketIO.Server;
 };
 
+type Agent = {
+  name: string;
+  desk: number | string;
+};
+
 export class Sockets {
   io: SocketIO.Server;
   ticketList: TicketList;
@@ -21,10 +26,17 @@ export class Sockets {
       console.log('New client connected', socket.id);
 
       socket.on('get-ticket', (_, cb) => {
-        console.log('get-ticket');
         const newTicket = this.ticketList.createTicket();
 
         cb(newTicket);
+      });
+
+      socket.on('agent-next-ticket', ({ name, desk }, cb) => {
+        const assignedTicket = this.ticketList.assignTicket(name, desk);
+
+        console.log('Agent next ticket', assignedTicket);
+
+        cb(assignedTicket);
       });
     });
   }
