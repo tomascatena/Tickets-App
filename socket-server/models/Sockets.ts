@@ -37,7 +37,7 @@ export class Sockets {
 
         cb(assignedTicket);
 
-        this.io.emit('ticket-assigned', this.ticketList.lastTickets);
+        this.io.emit('ticket-assigned', this.ticketList.lastAssignedTickets);
       });
     });
   }

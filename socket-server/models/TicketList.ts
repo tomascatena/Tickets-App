@@ -16,7 +16,7 @@ export class TicketList {
     return this.lastTicketNumber++;
   }
 
-  get lastTickets(): Ticket[] {
+  get lastAssignedTickets(): Ticket[] {
     return this.inProgressTickets.slice(0, 13);
   }
 

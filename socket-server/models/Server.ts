@@ -13,6 +13,7 @@ export class Server {
   app: Express;
   server: http.Server;
   io: SocketIO.Server;
+  sockets: Sockets;
 
   constructor(serverConfig: ServerConfig) {
     this.port = serverConfig.port;
@@ -29,17 +30,24 @@ export class Server {
         allowedHeaders: 'Content-Type, Authorization, X-Requested-With, X-Socket-ID',
       },
     });
+
+    // Initialize sockets
+    this.sockets = new Sockets({ io: this.io });
   }
 
   middlewares() {
     this.app.use(express.static('public'));
     this.app.use(cors());
+
+    this.app.get('/last-tickets', (req, res) => {
+      res.json({
+        lastTickets: this.sockets.ticketList.lastAssignedTickets,
+      });
+    });
   }
 
   configureSockets() {
-    const sockets = new Sockets({ io: this.io });
-
-    sockets.socketsEvents();
+    this.sockets.socketsEvents();
   }
 
   start() {
