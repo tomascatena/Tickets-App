@@ -1,5 +1,7 @@
 import { Box } from '@mui/system';
 import { Button, Container, Palette, PaletteColor, Typography } from '@mui/material';
+import { SocketContext } from '../../context/SocketContext';
+import { Ticket } from '../../typings/typings';
 import { styled } from '@mui/material/styles';
 import { useHideMenu } from '../../hooks/useHideMenu';
 import React from 'react';
@@ -17,14 +19,20 @@ const ColorText = styled('span', {
   fontSize,
 }));
 
-const handleGetTicket = () => {
-  console.log('get ticket');
-};
-
 type Props = {};
 
 const CreateTicketPage: React.FC<Props> = () => {
   useHideMenu({ shouldHideMenu: true });
+
+  const { socket } = React.useContext(SocketContext)!;
+
+  const [ticket, setTicket] = React.useState<Ticket | null>(null);
+
+  const handleGetTicket = () => {
+    socket.emit('get-ticket', null, (ticket: Ticket) => {
+      setTicket(ticket);
+    });
+  };
 
   return (
     <Container>
@@ -76,16 +84,22 @@ const CreateTicketPage: React.FC<Props> = () => {
           flexDirection: 'column',
         }}
       >
-        <Typography variant='h6'>
-          Your Number
-        </Typography>
+        {
+          ticket && (
+            <>
+              <Typography variant='h6'>
+                Your Number
+              </Typography>
 
-        <ColorText
-          fontSize='3rem'
-          color='success'
-        >
-          55
-        </ColorText>
+              <ColorText
+                fontSize='3rem'
+                color='success'
+              >
+                {ticket ? ticket?.ticketNumber : 'Loading...'}
+              </ColorText>
+            </>
+          )
+        }
       </Box>
     </Container >
   );
