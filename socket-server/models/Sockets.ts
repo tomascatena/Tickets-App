@@ -1,5 +1,4 @@
 import SocketIO from 'socket.io';
-import { Ticket } from './Ticket';
 import { TicketList } from './TicketList';
 
 export type SocketsConfig = {
@@ -37,6 +36,8 @@ export class Sockets {
         console.log('Agent next ticket', assignedTicket);
 
         cb(assignedTicket);
+
+        this.io.emit('ticket-assigned', this.ticketList.lastTickets);
       });
     });
   }

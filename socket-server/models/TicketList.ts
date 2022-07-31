@@ -6,7 +6,7 @@ export class TicketList {
   inProgressTickets: Ticket[];
 
   constructor() {
-    this.lastTicketNumber = 0;
+    this.lastTicketNumber = 1;
 
     this.pendingTickets = [];
     this.inProgressTickets = [];
@@ -17,7 +17,7 @@ export class TicketList {
   }
 
   get lastTickets(): Ticket[] {
-    return this.pendingTickets.slice(0, 13);
+    return this.inProgressTickets.slice(0, 13);
   }
 
   createTicket() {

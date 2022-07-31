@@ -1,12 +1,7 @@
 import { Card, CardContent, Divider, Typography } from '@mui/material';
 import { CustomBadge } from './CustomBadge';
+import { Ticket } from '../../typings/typings';
 import React from 'react';
-
-type Ticket = {
-  ticket: number;
-  agent: string;
-  desk: number;
-};
 
 type Props = {
   ticket: Ticket;
@@ -17,7 +12,7 @@ const TicketCard: React.FC<Props> = ({ ticket }) => {
     <Card>
       <CardContent>
         <Typography variant='h3'>
-          No. {ticket.ticket}
+          No. {ticket.ticketNumber}
         </Typography>
       </CardContent>
 
