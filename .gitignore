@@ -1,0 +1,16 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+react-client/node_modules
+react-client/.pnp
+react-client.pnp.js
+
+# testing
+react-client/coverage
+
+# production
+react-client/build
+
+/socket-server/node_modules
+/socket-server/dist
+/socket-server/.env
