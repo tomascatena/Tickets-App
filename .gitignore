@@ -11,6 +11,8 @@ react-client/coverage
 # production
 react-client/build
 
+react-client/.env
+
 /socket-server/node_modules
 /socket-server/dist
 /socket-server/.env

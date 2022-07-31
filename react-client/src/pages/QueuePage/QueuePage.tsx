@@ -1,6 +1,7 @@
 import { Box, Container, Divider, Grid, Typography } from '@mui/material';
 import { SocketContext } from '../../context/SocketContext';
 import { Ticket } from '../../typings/typings';
+import { getLastAssignedTickets } from '../../helpers/getLastAssignedTickets';
 import { useHideMenu } from '../../hooks/useHideMenu';
 import React from 'react';
 import TicketBox from './TicketBox';
@@ -12,6 +13,10 @@ const QueuePage: React.FC<Props> = () => {
   useHideMenu({ shouldHideMenu: true });
 
   const [tickets, setTickets] = React.useState<Ticket[] | null>(null);
+
+  React.useEffect(() => {
+    getLastAssignedTickets().then(setTickets);
+  }, []);
 
   const { socket } = React.useContext(SocketContext)!;
 

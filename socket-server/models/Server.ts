@@ -39,7 +39,7 @@ export class Server {
     this.app.use(express.static('public'));
     this.app.use(cors());
 
-    this.app.get('/last-tickets', (req, res) => {
+    this.app.get('/tickets/last-assigned', (req, res) => {
       res.json({
         lastTickets: this.sockets.ticketList.lastAssignedTickets,
       });
